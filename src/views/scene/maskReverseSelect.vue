@@ -694,7 +694,7 @@ const handleCascaderChange = (value) => {
       // 如果选择的是建筑（二级菜单），显示详细信息
       if (value.length === 2 && selectedData.properties) {
         buildInfo.value = selectedData.properties;
-        dialogVisible.value = true;
+        // dialogVisible.value = true;
       }
     }
   }
