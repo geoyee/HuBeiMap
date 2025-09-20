@@ -1,1 +1,0 @@
-import{o,f as t}from"./index.22fc6a4f.js";const s={__name:"czml",setup(c){const{viewer:e}=window;let a=new Cesium.CzmlDataSource.load("/HuBeiMap/models/wx.czml");return e.dataSources.add(a),e.clock.shouldAnimate=!0,(l,r)=>(o(),t("div"))}};export{s as default};

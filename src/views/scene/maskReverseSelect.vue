@@ -227,15 +227,14 @@ const drawRegionBillboards = async () => {
         font: '18px sans-serif',
         scale: 0.7,
         // style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        fillColor: Cesium.Color.fromCssColorString("#fff"), // 城市名称为白色
+        fillColor: Cesium.Color.fromCssColorString("#000"), // 城市名称为白色
         verticalOrigin: Cesium.VerticalOrigin.TOP,
         pixelOffset: new Cesium.Cartesian2(0, 0), // 城市名称在上方
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        backgroundColor: Cesium.Color.BLACK.withAlpha(0.3),
+        style: Cesium.LabelStyle.FILL,
         backgroundPadding: new Cesium.Cartesian2(8, 4),
         showBackground: true,
-        backgroundColor: Cesium.Color.PINK.withAlpha(0.2), 
+        backgroundColor: Cesium.Color.PINK, 
         distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
           80000,
           3000000
@@ -259,13 +258,13 @@ const drawRegionBillboards = async () => {
         id: `region_count_${QUHUADAIMA}_${index}`,
         position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
         label: {
-          text: `(${buildingCount})`,
+          text: `（${buildingCount}）`,
           font: '18px sans-serif',
           scale: 0.7,
-          style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-          fillColor: Cesium.Color.fromCssColorString("#ff0000"), // 建筑数量为红色
+          style: Cesium.LabelStyle.FILL,
+          fillColor: Cesium.Color.fromCssColorString("#f00"), // 建筑数量为红色
           outlineColor: Cesium.Color.fromCssColorString("#fff"),
-          outlineWidth: 2,
+          outlineWidth: 1,
           verticalOrigin: Cesium.VerticalOrigin.TOP,
           pixelOffset: new Cesium.Cartesian2(0, 30), // 数量显示在城市名称下方
           disableDepthTestDistance: Number.POSITIVE_INFINITY,
@@ -319,7 +318,7 @@ const drawBuildBillboards = async () => {
         outlineWidth: 1, // 字体外圈线宽度（同样也有颜色可设置）
         outlineColor: Cesium.Color.fromCssColorString("#666"),
         verticalOrigin: Cesium.VerticalOrigin.TOP, // 垂直位置
-        pixelOffset: new Cesium.Cartesian2(0, -65), // 中心位置
+        pixelOffset: new Cesium.Cartesian2(0, -75), // 中心位置
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
         showBackground: true,
         backgroundColor: Cesium.Color.fromCssColorString("#666").withAlpha(0.2), 
@@ -864,4 +863,5 @@ const buildInfo = ref({
     border-radius: 10px 10px 0 0;
   }
 }
+
 </style>
