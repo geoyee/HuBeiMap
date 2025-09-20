@@ -22,7 +22,7 @@ const getImgSrc = (name) => {
 
 
 const onStart = async () => {
-  const { res } = await getGeojson("/json/Hubei.json");
+  const { res } = await getGeojson("/json/Hubei.geojson");
   const { features } = res;
 
   // 处理所有features
@@ -469,7 +469,7 @@ const onClear = () => {
 };
 
 const getJson = async () => {
-  const { res } = await getGeojson("/json/Hubei.json");
+  const { res } = await getGeojson("/json/Hubei.geojson");
   addDataToGlobe(res.features,);
 };
 
