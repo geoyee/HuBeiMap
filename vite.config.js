@@ -71,10 +71,10 @@ export default defineConfig(({ mode }) => {
                   /\/json\//g,
                   "/HuBeiMap/json/"
                 );
-                // chunk.code = chunk.code.replace(
-                //   /\/images\//g,
-                //   "/HuBeiMap/images/"
-                // );
+                chunk.code = chunk.code.replace(
+                  /\/images\//g,
+                  "/HuBeiMap/images/"
+                );
                 chunk.code = chunk.code.replace(
                   /\/models\//g,
                   "/HuBeiMap/models/"

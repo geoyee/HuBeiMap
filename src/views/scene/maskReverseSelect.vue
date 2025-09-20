@@ -726,7 +726,7 @@ const buildInfo = ref({
       <template #header>
         <div class="dialog-title">
           <span class="intro">
-            <img class="icon" src="/images/jingqu.png" />
+            <img class="icon" src="/icon/jingqu.png" />
             <span class="landmarkName">{{ buildInfo.landmarkName }}</span>
           </span>
           <div class="location">{{ buildInfo.region }}</div>
