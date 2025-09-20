@@ -1,10 +1,3 @@
-<!--
- * @Descripttion: 
- * @Author: 笙痞
- * @Date: 2022-10-13 16:07:57
- * @LastEditors: WangTao borderpanda@163.com
- * @LastEditTime: 2025-09-19 18:29:42
--->
 <script setup>
 import { onMounted } from "vue";
 import * as Cesium from "cesium";

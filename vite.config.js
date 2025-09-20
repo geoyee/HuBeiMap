@@ -69,15 +69,15 @@ export default defineConfig(({ mode }) => {
               if (chunk.type === "chunk" && chunk.code) {
                 chunk.code = chunk.code.replace(
                   /\/json\//g,
-                  "/cesium-vue3-vite/json/"
+                  "/HuBeiMap/json/"
                 );
                 chunk.code = chunk.code.replace(
                   /\/images\//g,
-                  "/cesium-vue3-vite/images/"
+                  "/HuBeiMap/images/"
                 );
                 chunk.code = chunk.code.replace(
                   /\/models\//g,
-                  "/cesium-vue3-vite/models/"
+                  "/HuBeiMap/models/"
                 );
               }
             }

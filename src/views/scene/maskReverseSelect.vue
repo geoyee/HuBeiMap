@@ -22,7 +22,7 @@ const getImgSrc = (name) => {
 
 
 const onStart = async () => {
-  const { res } = await getGeojson("/Hubei.json");
+  const { res } = await getGeojson("/json/Hubei.json");
   const { features } = res;
 
   // 处理所有features
@@ -184,7 +184,7 @@ const createMask = (data) => {
 // 获取城市建筑数量映射
 const getCityBuildingCounts = async () => {
   try {
-    const { res } = await getGeojson("/red.geojson");
+    const { res } = await getGeojson("/json/red.geojson");
     const { features } = res;
 
     const cityCount = {};
@@ -200,10 +200,10 @@ const getCityBuildingCounts = async () => {
   }
 };
 
-// 新增方法：绘制region.json的billboard点
+// 新增方法：绘制json/region.json的billboard点
 const drawRegionBillboards = async () => {
-  // 读取region.json文件
-  const { res } = await getGeojson("/region.json");
+  // 读取json/region.json文件
+  const { res } = await getGeojson("/json/region.json");
   const { features } = res;
 
   // 获取城市建筑数量映射
@@ -295,8 +295,8 @@ const drawRegionBillboards = async () => {
 };
 
 const drawBuildBillboards = async () => {
-  // 读取region.json文件
-  const { res } = await getGeojson("/red.geojson");
+  // 读取json/region.json文件
+  const { res } = await getGeojson("/json/red.geojson");
   const { features } = res;
 
   // 创建billboard点
@@ -469,7 +469,7 @@ const onClear = () => {
 };
 
 const getJson = async () => {
-  const { res } = await getGeojson("/Hubei.json");
+  const { res } = await getGeojson("/json/Hubei.json");
   addDataToGlobe(res.features,);
 };
 
@@ -577,10 +577,10 @@ onUnmounted(() => {
 // 生成级联选择器的数据结构
 const generateCascaderOptions = async () => {
   try {
-    // 读取region.json和red.geojson数据
+    // 读取json/region.json和json/red.geojson数据
     const [regionResult, redResult] = await Promise.all([
-      getGeojson("/region.json"),
-      getGeojson("/red.geojson")
+      getGeojson("/json/region.json"),
+      getGeojson("/json/red.geojson")
     ]);
 
     const regionFeatures = regionResult.res.features;
