@@ -59,31 +59,31 @@ export default defineConfig(({ mode }) => {
         strictRequires: true, // 兼容commonjs
       },
       outDir: "docs",
-      rollupOptions: {
-        plugins: {
-          // 重写静态资源路径
-          name: "rewrite-paths",
-          generateBundle(_, bundle) {
-            for (const fileName in bundle) {
-              const chunk = bundle[fileName];
-              if (chunk.type === "chunk" && chunk.code) {
-                chunk.code = chunk.code.replace(
-                  /\/json\//g,
-                  "/HuBeiMap/json/"
-                );
-                chunk.code = chunk.code.replace(
-                  /\/images\//g,
-                  "/HuBeiMap/images/"
-                );
-                chunk.code = chunk.code.replace(
-                  /\/models\//g,
-                  "/HuBeiMap/models/"
-                );
-              }
-            }
-          },
-        },
-      },
+      // rollupOptions: {
+      //   plugins: {
+      //     // 重写静态资源路径
+      //     name: "rewrite-paths",
+      //     generateBundle(_, bundle) {
+      //       for (const fileName in bundle) {
+      //         const chunk = bundle[fileName];
+      //         if (chunk.type === "chunk" && chunk.code) {
+      //           chunk.code = chunk.code.replace(
+      //             /\/json\//g,
+      //             "/HuBeiMap/json/"
+      //           );
+      //           chunk.code = chunk.code.replace(
+      //             /\/images\//g,
+      //             "/HuBeiMap/images/"
+      //           );
+      //           chunk.code = chunk.code.replace(
+      //             /\/models\//g,
+      //             "/HuBeiMap/models/"
+      //           );
+      //         }
+      //       }
+      //     },
+      //   },
+      // },
     },
     base: "./",
 

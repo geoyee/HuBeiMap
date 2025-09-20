@@ -4,7 +4,8 @@ import * as Cesium from "cesium";
 import CesiumTerrainProviderEdit from "./utils/cesiumCtrl/flat/CesiumTerrainProviderEdit.js";
 import { getcameraInfo } from "@/utils/cesiumCtrl/getCameraInfo.js";
 
-Cesium.Ion.defaultAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MTg4ZDQ3NS1jZjgyLTRkNDUtODc1Ni1jYjY3YzM5YWJlYjUiLCJpZCI6MjU5NjEyLCJpYXQiOjE3MzMyMDQzMjZ9.WkUOmgdA5uGbbGJsyNIEuxfHkY553ZsNUdAj-_V3kRA"
+Cesium.Ion.defaultAccessToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MTg4ZDQ3NS1jZjgyLTRkNDUtODc1Ni1jYjY3YzM5YWJlYjUiLCJpZCI6MjU5NjEyLCJpYXQiOjE3MzMyMDQzMjZ9.WkUOmgdA5uGbbGJsyNIEuxfHkY553ZsNUdAj-_V3kRA";
 
 onMounted(() => {
   init();
@@ -55,6 +56,8 @@ const init = () => {
   // viewer.imageryLayers.get(0).show = false;
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
+  viewer.scene.fxaa = true;
+  viewer.scene.postProcessStages.fxaa.enabled = true;
   // 显示帧率
   // viewer.scene.debugShowFramesPerSecond = true;
   viewer.scene.globe.depthTestAgainstTerrain = true;
@@ -72,39 +75,42 @@ const init = () => {
 
   // 调试使用
   window.viewer = viewer;
-    // 监听点击事件，拾取坐标
-    const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
-    handler.setInputAction((e) => {
-      const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
-      const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
-      console.log(
-        "经度：" +
-          Cesium.Math.toDegrees(randiansPos.longitude) +
-          ", 纬度：" +
-          Cesium.Math.toDegrees(randiansPos.latitude)
-      );
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
-  
+  // 监听点击事件，拾取坐标
+  const handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+  handler.setInputAction((e) => {
+    const clickPosition = viewer.scene.camera.pickEllipsoid(e.position);
+    const randiansPos = Cesium.Cartographic.fromCartesian(clickPosition);
+    console.log(
+      "经度：" +
+        Cesium.Math.toDegrees(randiansPos.longitude) +
+        ", 纬度：" +
+        Cesium.Math.toDegrees(randiansPos.latitude)
+    );
+  }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+
   window.__getCameraInfo = () => getcameraInfo(viewer);
   viewer.camera.setView({
     // Cesium的坐标是以地心为原点，一向指向南美洲，一向指向亚洲，一向指向北极州
     // fromDegrees()方法，将经纬度和高程转换为世界坐标
-    destination: Cesium.Cartesian3.fromDegrees(  112.201427213312257,
-    31.14038434152244, 1000000),
+    destination: Cesium.Cartesian3.fromDegrees(
+      112.201427213312257,
+      31.14038434152244,
+      1000000
+    ),
     orientation: {
       // 指向
       heading: 6.283185307179581,
       // 视角
       pitch: -1.5688168484696687,
-      roll: 0.0
-    }
+      roll: 0.0,
+    },
   });
 };
 </script>
 
 <template>
   <el-container>
-   <!--  <el-aside>
+    <!--  <el-aside>
       <Menu></Menu>
     </el-aside> -->
     <el-container>
