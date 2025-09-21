@@ -17,7 +17,7 @@ const init = () => {
     // imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
     //   url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
     // }),
-    //此处使用CesiumTerrainProviderEdit替换原来的CesiumTerrainProvider类，实现指定区域地形压平处理
+    // 此处使用CesiumTerrainProviderEdit替换原来的CesiumTerrainProvider类，实现指定区域地形压平处理
     // terrainProvider: new CesiumTerrainProviderEdit({
     //   url: "http://data.marsgis.cn/terrain",
     // }),
@@ -46,20 +46,22 @@ const init = () => {
     sceneMode: Cesium.SceneMode.SCENE2D, // 2d
     // scene3DOnly: true,
     // orderIndependentTranslucency: false,
-    baseLayer: Cesium.ImageryLayer.fromProviderAsync(
-      Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
-        Cesium.ArcGisBaseMapType.SATELLITE
-      )
-    ),
+    // baseLayer: Cesium.ImageryLayer.fromProviderAsync(
+    //   Cesium.ArcGisMapServerImageryProvider.fromBasemapType(
+    //     Cesium.ArcGisBaseMapType.SATELLITE
+    //   )
+    // ),
   });
+  // 分辨率
+  viewer.resolutionScale = window.devicePixelRatio || 1;
   // 不显示底图
-  // viewer.imageryLayers.get(0).show = false;
+  viewer.imageryLayers.get(0).show = false;
   // 去除logo
   viewer.cesiumWidget.creditContainer.style.display = "none";
+  // 抗锯齿
   viewer.scene.fxaa = true;
   viewer.scene.postProcessStages.fxaa.enabled = true;
-  // 显示帧率
-  // viewer.scene.debugShowFramesPerSecond = true;
+  // 深度检测
   viewer.scene.globe.depthTestAgainstTerrain = true;
   // 外天空盒
   viewer.scene.skyBox = new Cesium.SkyBox({
