@@ -15,11 +15,8 @@ import OperateBox from "@/components/OperateBox.vue";
 const { viewer } = window;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
 const getImgSrc = (name) => {
-  return new URL(`/images/${name}`, import.meta.url)
-    .href;
+  return new URL(`/images/${name}`, import.meta.url).href;
 };
-
-
 
 const onStart = async () => {
   const { res } = await getGeojson("/json/Hubei.geojson");
@@ -98,9 +95,9 @@ const onStart = async () => {
   // }
 
   // dealEntity();
-  getJson()
-  drawRegionBillboards()
-  drawBuildBillboards()
+  getJson();
+  drawRegionBillboards();
+  drawBuildBillboards();
 };
 
 const createMask = (data) => {
@@ -188,7 +185,7 @@ const getCityBuildingCounts = async () => {
     const { features } = res;
 
     const cityCount = {};
-    features.forEach(feature => {
+    features.forEach((feature) => {
       const region = feature.properties.region;
       cityCount[region] = (cityCount[region] || 0) + 1;
     });
@@ -209,7 +206,6 @@ const drawRegionBillboards = async () => {
   // 获取城市建筑数量映射
   const cityBuildingCounts = await getCityBuildingCounts();
 
-
   // 创建billboard点
   features.forEach((feature, index) => {
     const { coordinates } = feature.geometry;
@@ -223,18 +219,18 @@ const drawRegionBillboards = async () => {
       id: `region_name_${QUHUADAIMA}_${index}`,
       position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
       label: {
-        text: NAME,
-        font: '18px sans-serif',
-        scale: 0.7,
-        // style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-        fillColor: Cesium.Color.fromCssColorString("#000"), // 城市名称为白色
+        text: NAME + " (" + buildingCount + ")",
+        font: "14px sans-serif",
+        scale: 1,
+        style: Cesium.LabelStyle.FILL,
+        fillColor: Cesium.Color.fromCssColorString("#000"),
         verticalOrigin: Cesium.VerticalOrigin.TOP,
         pixelOffset: new Cesium.Cartesian2(0, 0), // 城市名称在上方
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
         style: Cesium.LabelStyle.FILL,
         backgroundPadding: new Cesium.Cartesian2(8, 4),
         showBackground: true,
-        backgroundColor: Cesium.Color.PINK, 
+        backgroundColor: Cesium.Color.fromCssColorString("#fff"),
         distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
           80000,
           3000000
@@ -246,47 +242,47 @@ const drawRegionBillboards = async () => {
         name: NAME,
         code: QUHUADAIMA,
         data: feature.properties,
-        type: 'region_billboard'
-      }
+        type: "region_billboard",
+      },
     });
 
     viewer.entities.add(cityNameEntity);
 
     // 如果有建筑数量，创建单独的数量标签
-    if (buildingCount > 0) {
-      const countEntity = new Cesium.Entity({
-        id: `region_count_${QUHUADAIMA}_${index}`,
-        position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
-        label: {
-          text: `（${buildingCount}）`,
-          font: '18px sans-serif',
-          scale: 0.7,
-          style: Cesium.LabelStyle.FILL,
-          fillColor: Cesium.Color.fromCssColorString("#f00"), // 建筑数量为红色
-          outlineColor: Cesium.Color.fromCssColorString("#fff"),
-          outlineWidth: 1,
-          verticalOrigin: Cesium.VerticalOrigin.TOP,
-          pixelOffset: new Cesium.Cartesian2(0, 30), // 数量显示在城市名称下方
-          disableDepthTestDistance: Number.POSITIVE_INFINITY,
-          backgroundColor: Cesium.Color.WHITE.withAlpha(0.8),
-          backgroundPadding: new Cesium.Cartesian2(6, 3),
-          distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
-            80000,
-            3000000
-          ),
-          scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.8, 1.5e7, 0.4),
-        },
-        // 添加自定义属性
-        properties: {
-          name: NAME,
-          code: QUHUADAIMA,
-          count: buildingCount,
-          type: 'region_count'
-        }
-      });
+    // if (buildingCount > 0) {
+    //   const countEntity = new Cesium.Entity({
+    //     id: `region_count_${QUHUADAIMA}_${index}`,
+    //     position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
+    //     label: {
+    //       text: `（${buildingCount}）`,
+    //       font: "18px sans-serif",
+    //       scale: 0.7,
+    //       style: Cesium.LabelStyle.FILL,
+    //       fillColor: Cesium.Color.fromCssColorString("#f00"), // 建筑数量为红色
+    //       outlineColor: Cesium.Color.fromCssColorString("#fff"),
+    //       outlineWidth: 1,
+    //       verticalOrigin: Cesium.VerticalOrigin.TOP,
+    //       pixelOffset: new Cesium.Cartesian2(0, 30), // 数量显示在城市名称下方
+    //       disableDepthTestDistance: Number.POSITIVE_INFINITY,
+    //       backgroundColor: Cesium.Color.WHITE.withAlpha(0.8),
+    //       backgroundPadding: new Cesium.Cartesian2(6, 3),
+    //       distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
+    //         80000,
+    //         3000000
+    //       ),
+    //       scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1.8, 1.5e7, 0.4),
+    //     },
+    //     // 添加自定义属性
+    //     properties: {
+    //       name: NAME,
+    //       code: QUHUADAIMA,
+    //       count: buildingCount,
+    //       type: "region_count",
+    //     },
+    //   });
 
-      viewer.entities.add(countEntity);
-    }
+    //   viewer.entities.add(countEntity);
+    // }
   });
 
   // 添加点击事件处理
@@ -309,19 +305,20 @@ const drawBuildBillboards = async () => {
       position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
       label: {
         text: landmarkName,
-        font: '22px sans-serif',
+        font: "20px sans-serif",
         scale: 1, // 标签的大小的放大倍数
         // horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
         // verticalOrigin: Cesium.VerticalOrigin.BOTTOM
-        style: Cesium.LabelStyle.FILL_AND_OUTLINE, // 字体样式
-        fillColor: Cesium.Color.fromCssColorString("#f00"), // 字体填充色
+        style: Cesium.LabelStyle.FILL, // 字体样式
+        fillColor: Cesium.Color.fromCssColorString("#000"), // 字体填充色
         outlineWidth: 1, // 字体外圈线宽度（同样也有颜色可设置）
-        outlineColor: Cesium.Color.fromCssColorString("#666"),
+        // outlineColor: Cesium.Color.fromCssColorString("#666"),
         verticalOrigin: Cesium.VerticalOrigin.TOP, // 垂直位置
         pixelOffset: new Cesium.Cartesian2(0, -75), // 中心位置
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
         showBackground: true,
-        backgroundColor: Cesium.Color.fromCssColorString("#666").withAlpha(0.2), 
+        backgroundColor:
+          Cesium.Color.fromCssColorString("#fff") /*.withAlpha(0.2)*/,
         backgroundPadding: new Cesium.Cartesian2(10, 6),
         distanceDisplayCondition: new Cesium.DistanceDisplayCondition(
           50,
@@ -329,7 +326,7 @@ const drawBuildBillboards = async () => {
         ),
       },
       billboard: {
-        image: '/images/dj.png', // 使用标记图标
+        image: "/images/dj.png", // 使用标记图标
         scale: 0.8,
         verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
         horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
@@ -346,19 +343,15 @@ const drawBuildBillboards = async () => {
       // 添加自定义属性用于交互
       properties: {
         data: feature.properties,
-        type: 'build_billboard'
-      }
+        type: "build_billboard",
+      },
     });
 
     viewer.entities.add(billboardEntity);
   });
-
 };
 
-const getCartesian = (
-  position,
-  viewer
-) => {
+const getCartesian = (position, viewer) => {
   const mapScene = viewer.scene;
   let cartesian;
   // 在模型上获取点击对象
@@ -402,9 +395,12 @@ const addRegionClickHandler = () => {
       const entity = pickedObject.id;
 
       // 检查是否是region billboard点或count点
-      if (entity.properties && entity.properties.type &&
-        (entity.properties.type.getValue() === 'region_billboard' ||
-          entity.properties.type.getValue() === 'region_count')) {
+      if (
+        entity.properties &&
+        entity.properties.type &&
+        (entity.properties.type.getValue() === "region_billboard" ||
+          entity.properties.type.getValue() === "region_count")
+      ) {
         const name = entity.properties.name.getValue();
         const code = entity.properties.code.getValue();
 
@@ -412,41 +408,55 @@ const addRegionClickHandler = () => {
         // 根据城市类型设置不同的飞行高度
         const getCityFlyHeight = (cityName) => {
           // 主要城市使用较低高度以便更好查看
-          const majorCities = ['武汉市', '宜昌市', '襄阳市', '荆州市', '黄冈市'];
+          const majorCities = [
+            "武汉市",
+            "宜昌市",
+            "襄阳市",
+            "荆州市",
+            "黄冈市",
+          ];
           if (majorCities.includes(cityName)) {
-            return 100000; 
+            return 100000;
           }
           // 其他城市使用标准高度
-          return 140000; 
+          return 140000;
         };
         const flyHeight = getCityFlyHeight(name);
 
         // 将世界坐标转换为经纬度
-        const cartesian = getCartesian(event.position, viewer)
+        const cartesian = getCartesian(event.position, viewer);
         if (cartesian) {
           const cartographic = Cesium.Cartographic.fromCartesian(cartesian);
           // 经度
-          const longitude = +Cesium.Math.toDegrees(cartographic.longitude).toFixed(8);
+          const longitude = +Cesium.Math.toDegrees(
+            cartographic.longitude
+          ).toFixed(8);
           // 纬度
-          const latitude = +Cesium.Math.toDegrees(cartographic.latitude).toFixed(8);
+          const latitude = +Cesium.Math.toDegrees(
+            cartographic.latitude
+          ).toFixed(8);
           // 相机飞行到该地区
           viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, flyHeight),
+            destination: Cesium.Cartesian3.fromDegrees(
+              longitude,
+              latitude,
+              flyHeight
+            ),
             orientation: {
               heading: Cesium.Math.toRadians(0.0),
               pitch: Cesium.Math.toRadians(-45.0), // 45度俯视角
-              roll: 0.0
+              roll: 0.0,
             },
-            duration: 1.0 // 飞行时间1秒
+            duration: 1.0, // 飞行时间1秒
           });
         }
-
-
-
-
       }
       // 检查是否是build billboard点
-      if (entity.properties && entity.properties.type && entity.properties.type.getValue() === 'build_billboard') {
+      if (
+        entity.properties &&
+        entity.properties.type &&
+        entity.properties.type.getValue() === "build_billboard"
+      ) {
         const data = entity.properties.data.getValue();
         console.log(`点击了建筑:--${JSON.stringify(data)} `);
         buildInfo.value = data;
@@ -458,21 +468,21 @@ const addRegionClickHandler = () => {
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 };
 
-
-
 const onClear = () => {
   viewer.scene.primitives.removeAll();
   viewer.entities.removeAll();
   // 清除事件处理器
-  viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
+  viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
+    Cesium.ScreenSpaceEventType.LEFT_CLICK
+  );
 };
 
 const getJson = async () => {
   const { res } = await getGeojson("/json/Hubei.geojson");
-  addDataToGlobe(res.features,);
+  addDataToGlobe(res.features);
 };
 
-const addDataToGlobe = (features,) => {
+const addDataToGlobe = (features) => {
   let instances = [];
   for (let i = 0; i < features.length; i++) {
     const curFeatures = features[i];
@@ -500,9 +510,7 @@ const addDataToGlobe = (features,) => {
           geometry: geometry,
           attributes: {
             color: Cesium.ColorGeometryInstanceAttribute.fromColor(
-              Cesium.Color.fromCssColorString(
-                "rgba(206, 37, 49, 0.1)"
-              )
+              Cesium.Color.fromCssColorString("rgba(206, 37, 49, 0.1)")
             ),
             show: new Cesium.ShowGeometryInstanceAttribute(true),
             // color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.fromRandom({ alpha: 0.7 })),
@@ -510,8 +518,6 @@ const addDataToGlobe = (features,) => {
         })
       );
     }
-
-
   }
 
   // 合并单个geometry,提高渲染效率
@@ -526,7 +532,6 @@ const addDataToGlobe = (features,) => {
   });
   viewer.scene.primitives.add(primitive);
 };
-
 
 // const scene = viewer.scene;
 // const handler = new Cesium.ScreenSpaceEventHandler(scene.canvas);
@@ -563,11 +568,10 @@ onMounted(async () => {
     changeColor: false,
   });
   onStart();
-  
+
   // 初始化级联选择器数据
   options.value = await generateCascaderOptions();
 });
-
 
 onUnmounted(() => {
   onClear();
@@ -579,7 +583,7 @@ const generateCascaderOptions = async () => {
     // 读取json/region.json和json/red.geojson数据
     const [regionResult, redResult] = await Promise.all([
       getGeojson("/json/region.json"),
-      getGeojson("/json/red.geojson")
+      getGeojson("/json/red.geojson"),
     ]);
 
     const regionFeatures = regionResult.res.features;
@@ -587,7 +591,7 @@ const generateCascaderOptions = async () => {
 
     // 按城市分组红色建筑数据
     const buildingsByCity = {};
-    redFeatures.forEach(building => {
+    redFeatures.forEach((building) => {
       const cityName = building.properties.region;
       if (!buildingsByCity[cityName]) {
         buildingsByCity[cityName] = [];
@@ -597,24 +601,24 @@ const generateCascaderOptions = async () => {
         label: building.properties.landmarkName,
         data: {
           coordinates: building.geometry.coordinates,
-          properties: building.properties
-        }
+          properties: building.properties,
+        },
       });
     });
 
     // 创建级联选择器选项
-    const cascaderOptions = regionFeatures.map(region => {
+    const cascaderOptions = regionFeatures.map((region) => {
       const cityName = region.properties.NAME;
       const cityBuildings = buildingsByCity[cityName] || [];
-      
+
       return {
         value: cityName,
         label: `${cityName} (${cityBuildings.length})`,
         data: {
           coordinates: region.geometry.coordinates,
-          properties: region.properties
+          properties: region.properties,
         },
-        children: cityBuildings
+        children: cityBuildings,
       };
     });
 
@@ -627,7 +631,7 @@ const generateCascaderOptions = async () => {
 
 const props1 = {
   checkStrictly: true,
-}
+};
 
 // 初始化级联选择器数据
 const options = ref([]);
@@ -638,14 +642,14 @@ const cascaderValue = ref([]);
 // 处理级联选择器变化
 const handleCascaderChange = (value) => {
   if (!value || value.length === 0) return;
-  
+
   // 获取选中的选项数据
   const findOptionData = (options, valuePath) => {
     let current = options;
     let data = null;
-    
+
     for (let i = 0; i < valuePath.length; i++) {
-      const item = current.find(option => option.value === valuePath[i]);
+      const item = current.find((option) => option.value === valuePath[i]);
       if (item) {
         data = item.data;
         if (i < valuePath.length - 1 && item.children) {
@@ -655,16 +659,16 @@ const handleCascaderChange = (value) => {
     }
     return data;
   };
-  
+
   const selectedData = findOptionData(options.value, value);
-  
+
   if (selectedData && selectedData.coordinates) {
     const coordinates = selectedData.coordinates;
     let longitude, latitude;
-    
+
     // 处理不同的坐标格式
     if (Array.isArray(coordinates) && coordinates.length >= 2) {
-      if (typeof coordinates[0] === 'number') {
+      if (typeof coordinates[0] === "number") {
         // 点坐标格式 [longitude, latitude]
         [longitude, latitude] = coordinates;
       } else if (Array.isArray(coordinates[0])) {
@@ -672,24 +676,32 @@ const handleCascaderChange = (value) => {
         [longitude, latitude] = coordinates[0];
       }
     }
-    
+
     if (longitude !== undefined && latitude !== undefined) {
       // 根据选择类型设置不同的飞行高度
       const flyHeight = value.length === 1 ? 200000 : 100000; // 城市或建筑
-      
+
       // 相机飞行到选中位置
       viewer.camera.flyTo({
-        destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, flyHeight),
+        destination: Cesium.Cartesian3.fromDegrees(
+          longitude,
+          latitude,
+          flyHeight
+        ),
         orientation: {
           heading: Cesium.Math.toRadians(0.0),
           pitch: Cesium.Math.toRadians(-45.0),
-          roll: 0.0
+          roll: 0.0,
         },
-        duration: 2.0
+        duration: 2.0,
       });
-      
-      console.log(`飞行到: ${value.join(' -> ')} (${longitude.toFixed(4)}, ${latitude.toFixed(4)})`);
-      
+
+      console.log(
+        `飞行到: ${value.join(" -> ")} (${longitude.toFixed(
+          4
+        )}, ${latitude.toFixed(4)})`
+      );
+
       // 如果选择的是建筑（二级菜单），显示详细信息
       if (value.length === 2 && selectedData.properties) {
         buildInfo.value = selectedData.properties;
@@ -699,28 +711,30 @@ const handleCascaderChange = (value) => {
   }
 };
 
-const dialogVisible = ref(false)
+const dialogVisible = ref(false);
 const buildInfo = ref({
   region: "武汉市",
   landmarkName: "八路军武汉办事处旧址",
-  landmarkIntroduction: "八路军武汉办事处旧址位于武汉市江岸区长春街57号。1937年12月-1938年10月期间，这里是八路军在武汉的办事机构。旧址为一幢四层楼房，复原了当年的办公室、会议室、宿舍等场景，展示了八路军武汉办事处在宣传抗日、输送人员和物资、开展统一战线等方面的重要工作。",
+  landmarkIntroduction:
+    "八路军武汉办事处旧址位于武汉市江岸区长春街57号。1937年12月-1938年10月期间，这里是八路军在武汉的办事机构。旧址为一幢四层楼房，复原了当年的办公室、会议室、宿舍等场景，展示了八路军武汉办事处在宣传抗日、输送人员和物资、开展统一战线等方面的重要工作。",
   reflectedSpirit: "抗日统战精神",
-  spiritConnotation: "积极倡导和推动抗日民族统一战线的团结协作精神；艰苦奋斗、无私奉献的工作作风。",
+  spiritConnotation:
+    "积极倡导和推动抗日民族统一战线的团结协作精神；艰苦奋斗、无私奉献的工作作风。",
   historicalPeriod: "新民主主义革命时期",
-  eventYear: "1937-1938年"
-})
+  eventYear: "1937-1938年",
+});
 </script>
 <template>
   <operate-box>
-    <el-cascader 
+    <el-cascader
       v-model="cascaderValue"
-      :options="options" 
-      :props="props1" 
-      clearable 
+      :options="options"
+      :props="props1"
+      clearable
       filterable
       @change="handleCascaderChange"
       placeholder="选择城市或建筑"
-      style="width: 300px; margin: 10px 40px;"
+      style="width: 300px; margin: 10px 40px"
     />
     <el-dialog v-model="dialogVisible" width="50%" :show-close="false">
       <template #header>
@@ -750,10 +764,8 @@ const buildInfo = ref({
           </div>
           <div class="activity">
             {{ buildInfo.eventYear }}
-
           </div>
         </div>
-
       </div>
     </el-dialog>
   </operate-box>
@@ -831,7 +843,7 @@ const buildInfo = ref({
   justify-content: space-between;
   gap: 10px;
 
-  &>div {
+  & > div {
     border-radius: 10px;
   }
 
@@ -863,5 +875,4 @@ const buildInfo = ref({
     border-radius: 10px 10px 0 0;
   }
 }
-
 </style>
