@@ -11,6 +11,7 @@ import { onMounted, onUnmounted, ref } from "vue";
 import { getGeojson } from "@/common/api/api.js";
 import modifyMap from "@/utils/cesiumCtrl/modifyMap.js";
 import OperateBox from "@/components/OperateBox.vue";
+import { gcj02towgs84, bd09towgs84 } from "@/utils/translate.js";
 
 const { viewer } = window;
 // viewer.scene.terrainProvider = Cesium.createWorldTerrain(); // 提供地形
@@ -298,11 +299,13 @@ const drawBuildBillboards = async () => {
   features.forEach((feature, index) => {
     const { coordinates } = feature.geometry;
     const { region, landmarkName } = feature.properties;
+    // 这个数据的坐标是gcj02的，需要转换到wgs84
+    const [curLng, curLat] = gcj02towgs84(coordinates[0], coordinates[1]);
 
     // 创建billboard实体
     const billboardEntity = new Cesium.Entity({
       id: `build_billboard_${region}_${index}`,
-      position: Cesium.Cartesian3.fromDegrees(coordinates[0], coordinates[1]),
+      position: Cesium.Cartesian3.fromDegrees(curLng, curLat),
       label: {
         text: landmarkName,
         font: "20px sans-serif",
