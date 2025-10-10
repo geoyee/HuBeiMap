@@ -17,9 +17,10 @@ const { viewer } = window;
 const getImgSrc = (name) => {
   return new URL(`/images/${name}`, import.meta.url).href;
 };
-
+let jsonData ;
 const onStart = async () => {
   const { res } = await getGeojson("/json/Hubei.geojson");
+  jsonData = res
   const { features } = res;
 
   // 处理所有features
@@ -95,7 +96,7 @@ const onStart = async () => {
   // }
 
   // dealEntity();
-  getJson();
+  getJson(jsonData);
   drawRegionBillboards();
   drawBuildBillboards();
 };
@@ -477,9 +478,8 @@ const onClear = () => {
   );
 };
 
-const getJson = async () => {
-  const { res } = await getGeojson("/json/Hubei.geojson");
-  addDataToGlobe(res.features);
+const getJson = async (json) => {
+  addDataToGlobe(json.features);
 };
 
 const addDataToGlobe = (features) => {
