@@ -27,7 +27,7 @@ const ERR_TYPE = {
 
 // 创建 axios 实例
 const axiosInstance = axios.create({
-  timeout: 10000, // 请求超时时间
+  timeout: 120000, // 请求超时时间
   // baseURL: BASE_URL, // API 请求的默认前缀
 });
 
